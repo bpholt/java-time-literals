@@ -50,8 +50,12 @@ lazy val `java-time-literals`: Project = (project in file("core"))
       )
     },
     testFrameworks += new TestFramework("munit.Framework"),
+    sonatypeCredentialHost := "s01.oss.sonatype.org",
   ))
 
 lazy val `java-time-literals-root`: Project = (project in file("."))
-  .settings(skip in publish := true)
+  .settings(
+    skip in publish := true,
+    sonatypeCredentialHost := "s01.oss.sonatype.org",
+  )
   .aggregate(`java-time-literals`)
