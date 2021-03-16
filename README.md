@@ -1,6 +1,6 @@
-# `java.time` Interpolaters
+# `java.time` Literals
 
-Scala string interpolaters for parsing string literals into `java.time` instances at compile time.
+Parse Scala string literals into `java.time` instances at compile time.
 
 ```scala
 > import dev.holt.javatime.literals._

@@ -1,8 +1,8 @@
 lazy val V = new {
   val SCALA_2_12 = "2.12.12"
-  val SCALA_2_13 = "2.13.4"
+  val SCALA_2_13 = "2.13.5"
   val Scalas = Seq(SCALA_2_13, SCALA_2_12)
-  val literally = "0.1-360f22d"
+  val literally = "1.0.0-RC1"
 }
 
 inThisBuild(List(
@@ -19,6 +19,7 @@ inThisBuild(List(
       url("https://holt.dev")
     )
   ),
+  githubWorkflowJavaVersions := Seq("adopt@1.8", "adopt@1.11"),
   githubWorkflowTargetTags ++= Seq("v*"),
   githubWorkflowPublishTargetBranches := Seq(RefPredicate.StartsWith(Ref.Tag("v"))),
   githubWorkflowBuild := Seq(WorkflowStep.Sbt(List("undeclaredCompileDependenciesTest", "unusedCompileDependenciesTest", "test"), name = Some("Build and test project"))),
@@ -39,8 +40,11 @@ inThisBuild(List(
 lazy val `java-time-literals`: Project = (project in file("core"))
   .settings(Seq(
     description := "Scala string interpolaters for parsing string literals into `java.time` instances at compile time",
+    unusedCompileDependenciesFilter -= moduleFilter("org.scala-lang", "scala-reflect"),
     libraryDependencies ++= {
       Seq(
+        "org.typelevel" %% "literally" % V.literally,
+        "org.scala-lang" % "scala-reflect" % scalaVersion.value,
         "org.scalameta" %% "munit" % "0.7.22" % Test,
       )
     },
