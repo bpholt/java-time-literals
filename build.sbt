@@ -35,6 +35,7 @@ inThisBuild(List(
     )
   ),
   startYear := Option(2021),
+  sonatypeCredentialHost := "s01.oss.sonatype.org",
 ))
 
 lazy val `java-time-literals`: Project = (project in file("core"))
