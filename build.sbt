@@ -1,8 +1,15 @@
+import sbtcrossproject.CrossPlugin.autoImport.crossProject
+import sbtcrossproject.CrossPlugin.autoImport.CrossType
+
+import scala.collection.immutable
+
 lazy val V = new {
   val SCALA_2_12 = "2.12.12"
   val SCALA_2_13 = "2.13.5"
-  val Scalas = Seq(SCALA_2_13, SCALA_2_12)
-  val literally = "1.0.0-RC1"
+  val SCALA_3_RC1 = "3.0.0-RC1"
+  val SCALA_3_RC2 = "3.0.0-RC2"
+  val Scalas = Seq(SCALA_2_13, SCALA_2_12, SCALA_3_RC1, SCALA_3_RC2)
+  val literally = "1.0.0"
 }
 
 inThisBuild(List(
@@ -38,23 +45,40 @@ inThisBuild(List(
   sonatypeCredentialHost := "s01.oss.sonatype.org",
 ))
 
-lazy val `java-time-literals`: Project = (project in file("core"))
+lazy val `java-time-literals` = crossProject(JSPlatform, JVMPlatform)
+  .in(file("core"))
   .settings(Seq(
-    description := "Scala string interpolaters for parsing string literals into `java.time` instances at compile time",
+    description := "Parse string literals into `java.time` instances at compile time",
     unusedCompileDependenciesFilter -= moduleFilter("org.scala-lang", "scala-reflect"),
     libraryDependencies ++= {
-      Seq(
-        "org.typelevel" %% "literally" % V.literally,
-        "org.scala-lang" % "scala-reflect" % scalaVersion.value,
-        "org.scalameta" %% "munit" % "0.7.22" % Test,
+      val scalaReflect: immutable.Seq[ModuleID] =
+        if (scalaVersion.value.startsWith("3")) Nil
+        else List("org.scala-lang" % "scala-reflect" % scalaVersion.value % "provided")
+
+      scalaReflect ++
+        Seq(
+          "org.typelevel" %% "literally" % V.literally,
+          "org.scalameta" %% "munit" % "0.7.23" % Test,
+        )
+    },
+    Compile / unmanagedSourceDirectories ++= { // needed until https://github.com/portable-scala/sbt-crossproject/issues/70 is fixed
+      val major = if (scalaVersion.value.startsWith("3")) "-3" else "-2"
+      List(CrossType.Pure, CrossType.Full).flatMap(
+        _.sharedSrcDir(baseDirectory.value, "main").toList.map(f => file(f.getPath + major))
       )
     },
     sonatypeCredentialHost := "s01.oss.sonatype.org",
   ))
+  .jsSettings(
+    Test / scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.CommonJSModule) },
+  )
 
 lazy val `java-time-literals-root`: Project = (project in file("."))
   .settings(
     publish / skip := true,
     sonatypeCredentialHost := "s01.oss.sonatype.org",
   )
-  .aggregate(`java-time-literals`)
+  .aggregate(
+    `java-time-literals`.jvm,
+    `java-time-literals`.js,
+  )
