@@ -29,7 +29,6 @@ inThisBuild(List(
   githubWorkflowJavaVersions := Seq("adopt@1.8", "adopt@1.11"),
   githubWorkflowTargetTags ++= Seq("v*"),
   githubWorkflowPublishTargetBranches := Seq(RefPredicate.StartsWith(Ref.Tag("v"))),
-  githubWorkflowBuild := Seq(WorkflowStep.Sbt(List("undeclaredCompileDependenciesTest", "unusedCompileDependenciesTest", "test"), name = Some("Build and test project"))),
   githubWorkflowPublish := Seq(
     WorkflowStep.Sbt(
       List("ci-release"),
@@ -49,7 +48,6 @@ lazy val `java-time-literals` = crossProject(JSPlatform, JVMPlatform)
   .in(file("core"))
   .settings(Seq(
     description := "Parse string literals into `java.time` instances at compile time",
-    unusedCompileDependenciesFilter -= moduleFilter("org.scala-lang", "scala-reflect"),
     libraryDependencies ++= {
       val scalaReflect: immutable.Seq[ModuleID] =
         if (scalaVersion.value.startsWith("3")) Nil
