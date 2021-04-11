@@ -49,13 +49,12 @@ lazy val `java-time-literals`: Project = (project in file("core"))
         "org.scalameta" %% "munit" % "0.7.22" % Test,
       )
     },
-    testFrameworks += new TestFramework("munit.Framework"),
     sonatypeCredentialHost := "s01.oss.sonatype.org",
   ))
 
 lazy val `java-time-literals-root`: Project = (project in file("."))
   .settings(
-    skip in publish := true,
+    publish / skip := true,
     sonatypeCredentialHost := "s01.oss.sonatype.org",
   )
   .aggregate(`java-time-literals`)
