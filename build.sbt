@@ -4,7 +4,7 @@ import sbtcrossproject.CrossPlugin.autoImport.CrossType
 import scala.collection.immutable
 
 lazy val V = new {
-  val SCALA_2_12 = "2.12.12"
+  val SCALA_2_12 = "2.12.13"
   val SCALA_2_13 = "2.13.5"
   val SCALA_3_RC1 = "3.0.0-RC1"
   val SCALA_3_RC2 = "3.0.0-RC2"
