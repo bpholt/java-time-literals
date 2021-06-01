@@ -6,10 +6,9 @@ import scala.collection.immutable
 lazy val V = new {
   val SCALA_2_12 = "2.12.14"
   val SCALA_2_13 = "2.13.6"
-  val SCALA_3_RC1 = "3.0.0-RC1"
-  val SCALA_3_RC2 = "3.0.0-RC2"
-  val Scalas = Seq(SCALA_2_13, SCALA_2_12, SCALA_3_RC1, SCALA_3_RC2)
-  val literally = "1.0.0"
+  val SCALA_3 = "3.0.0"
+  val Scalas = Seq(SCALA_2_13, SCALA_2_12, SCALA_3)
+  val literally = "1.0.2"
 }
 
 inThisBuild(List(
@@ -56,7 +55,7 @@ lazy val `java-time-literals` = crossProject(JSPlatform, JVMPlatform)
       scalaReflect ++
         Seq(
           "org.typelevel" %% "literally" % V.literally,
-          "org.scalameta" %% "munit" % "0.7.23" % Test,
+          "org.scalameta" %% "munit" % "0.7.26" % Test,
         )
     },
     Compile / unmanagedSourceDirectories ++= { // needed until https://github.com/portable-scala/sbt-crossproject/issues/70 is fixed
