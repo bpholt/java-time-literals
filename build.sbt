@@ -55,7 +55,7 @@ lazy val `java-time-literals` = crossProject(JSPlatform, JVMPlatform)
       scalaReflect ++
         Seq(
           "org.typelevel" %% "literally" % V.literally,
-          "org.scalameta" %% "munit" % "0.7.28" % Test,
+          "org.scalameta" %% "munit" % "0.7.29" % Test,
         )
     },
     Compile / unmanagedSourceDirectories ++= { // needed until https://github.com/portable-scala/sbt-crossproject/issues/70 is fixed
