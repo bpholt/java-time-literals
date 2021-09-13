@@ -12,42 +12,45 @@ lazy val V = new {
   val munit = "0.7.29"
 }
 
-inThisBuild(List(
-  scalaVersion := V.Scalas.head,
-  crossScalaVersions := V.Scalas,
-  organization := "dev.holt",
-  homepage := Option(url("https://github.com/bpholt/java-time-literals")),
-  licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
-  developers := List(
-    Developer(
-      "bpholt",
-      "Brian Holt",
-      "bholt+github@planetholt.com",
-      url("https://holt.dev")
+ThisBuild / scalaVersion := V.Scalas.head
+ThisBuild / crossScalaVersions := V.Scalas
+ThisBuild / organization := "dev.holt"
+ThisBuild / homepage := Option(url("https://github.com/bpholt/java-time-literals"))
+ThisBuild / licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
+ThisBuild / developers := List(
+  Developer(
+    "bpholt",
+    "Brian Holt",
+    "bholt+github@planetholt.com",
+    url("https://holt.dev")
+  )
+)
+ThisBuild / githubWorkflowBuild := Seq(
+  WorkflowStep.Sbt(List("test"), name = Option("Run tests")),
+  WorkflowStep.Sbt(`java-time-literals`.componentProjects.map(p => s"${p.id} / mimaReportBinaryIssues").toList, name = Option("Check binary compatibility with MiMa")),
+)
+ThisBuild / githubWorkflowJavaVersions := Seq("adopt@1.8", "adopt@1.11")
+ThisBuild / githubWorkflowTargetTags ++= Seq("v*")
+ThisBuild / githubWorkflowPublishTargetBranches := Seq(RefPredicate.StartsWith(Ref.Tag("v")))
+ThisBuild / githubWorkflowPublish := Seq(
+  WorkflowStep.Sbt(
+    List("ci-release"),
+    env = Map(
+      "PGP_PASSPHRASE" -> "${{ secrets.PGP_PASSPHRASE }}",
+      "PGP_SECRET" -> "${{ secrets.PGP_SECRET }}",
+      "SONATYPE_PASSWORD" -> "${{ secrets.SONATYPE_PASSWORD }}",
+      "SONATYPE_USERNAME" -> "${{ secrets.SONATYPE_USERNAME }}",
     )
-  ),
-  githubWorkflowJavaVersions := Seq("adopt@1.8", "adopt@1.11"),
-  githubWorkflowTargetTags ++= Seq("v*"),
-  githubWorkflowPublishTargetBranches := Seq(RefPredicate.StartsWith(Ref.Tag("v"))),
-  githubWorkflowPublish := Seq(
-    WorkflowStep.Sbt(
-      List("ci-release"),
-      env = Map(
-        "PGP_PASSPHRASE" -> "${{ secrets.PGP_PASSPHRASE }}",
-        "PGP_SECRET" -> "${{ secrets.PGP_SECRET }}",
-        "SONATYPE_PASSWORD" -> "${{ secrets.SONATYPE_PASSWORD }}",
-        "SONATYPE_USERNAME" -> "${{ secrets.SONATYPE_USERNAME }}",
-      )
-    )
-  ),
-  startYear := Option(2021),
-  sonatypeCredentialHost := "s01.oss.sonatype.org",
-))
+  )
+)
+ThisBuild / startYear := Option(2021)
+ThisBuild / sonatypeCredentialHost := "s01.oss.sonatype.org"
 
 lazy val `java-time-literals` = crossProject(JSPlatform, JVMPlatform)
   .in(file("core"))
   .settings(Seq(
     description := "Parse string literals into `java.time` instances at compile time",
+    mimaPreviousArtifacts := Set(organization.value %% moduleName.value % "1.0.0"),
     libraryDependencies ++= {
       val scalaReflect: immutable.Seq[ModuleID] =
         if (scalaVersion.value.startsWith("3")) Nil
