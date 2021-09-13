@@ -3,6 +3,7 @@ package dev.holt.javatime
 import org.typelevel.literally.Literally
 
 import java.time._
+import java.time.format.DateTimeFormatter
 import scala.util.{Failure, Success, Try}
 
 //noinspection ScalaUnusedSymbol
@@ -22,6 +23,7 @@ object literals {
     inline def zonedDateTime(args: Any*): ZonedDateTime = ${ZonedDateTimeLiteral('ctx, 'args)}
     inline def zoneId(args: Any*): ZoneId = ${ZoneIdLiteral('ctx, 'args)}
     inline def zoneOffset(args: Any*): ZoneOffset = ${ZoneOffsetLiteral('ctx, 'args)}
+    inline def dateTimeFormatter(args: Any*): DateTimeFormatter = ${DateTimeFormatterLiteral('ctx, 'args)}
   }
 
   object DurationLiteral extends Literally[Duration] {
@@ -133,6 +135,14 @@ object literals {
     Try(ZoneOffset.of(s)) match {
       case Failure(ex) => Left(ex.getMessage)
       case Success(_) => Right('{java.time.ZoneOffset.of(${Expr(s)})})
+    }
+  }
+
+  object DateTimeFormatterLiteral extends Literally[DateTimeFormatter] {
+    override def validate(s: String)(using Quotes) =
+    Try(DateTimeFormatter.ofPattern(s)) match {
+      case Failure(ex) => Left(ex.getMessage)
+      case Success(_) => Right('{java.time.format.DateTimeFormatter.ofPattern(${Expr(s)})})
     }
   }
 

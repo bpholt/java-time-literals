@@ -1,11 +1,13 @@
 package dev.holt.javatime
 
 import dev.holt.javatime.literals._
-import munit.FunSuite
+import munit.ScalaCheckSuite
+import org.scalacheck.Prop.forAll
 
 import java.time._
+import java.time.format.DateTimeFormatter
 
-class JavaTimeSuite extends FunSuite {
+class JavaTimeSuite extends ScalaCheckSuite {
   test("Duration interpolation should work like runtime parsing") {
     val expected = Duration.parse("PT20.345S")
     val output = duration"PT20.345S"
@@ -103,4 +105,14 @@ class JavaTimeSuite extends FunSuite {
 
     assertEquals(expected, output)
   }
+
+  test("DateTimeFormatter interpolation should work like runtime parsing") {
+    forAll { (timestamp: LocalDateTime) =>
+      val expected = DateTimeFormatter.ofPattern("yyyy").format(timestamp)
+      val output = dateTimeFormatter"yyyy".format(timestamp)
+
+      assertEquals(expected, output)
+    }
+  }
+
 }

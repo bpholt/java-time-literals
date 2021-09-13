@@ -3,6 +3,7 @@ package dev.holt.javatime
 import org.typelevel.literally.Literally
 
 import java.time._
+import java.time.format.DateTimeFormatter
 import scala.reflect.macros.blackbox
 import scala.util.{Failure, Success, Try}
 
@@ -270,6 +271,25 @@ object literals {
       Try(ZoneOffset.of(s)) match {
         case Failure(ex) => Left(ex.getMessage)
         case Success(_) => Right(c.Expr(q"java.time.ZoneOffset.of($s)"))
+      }
+    }
+  }
+
+  implicit class dateTimeFormatter(val sc: StringContext) extends AnyVal {
+    def dateTimeFormatter(args: Any*): DateTimeFormatter = macro DateTimeFormatterLiteral.make
+  }
+
+  object DateTimeFormatterLiteral extends Literally[DateTimeFormatter] {
+    def make(c: blackbox.Context)
+            (args: c.Expr[Any]*): c.Expr[DateTimeFormatter] = apply(c)(args: _*)
+
+    override def validate(c: DateTimeFormatterLiteral.Context)
+                         (s: String): Either[String, c.Expr[DateTimeFormatter]] = {
+      import c.universe.{Try => _, _}
+
+      Try(DateTimeFormatter.ofPattern(s)) match {
+        case Failure(ex) => Left(ex.getMessage)
+        case Success(_) => Right(c.Expr(q"java.time.format.DateTimeFormatter.ofPattern($s)"))
       }
     }
   }
