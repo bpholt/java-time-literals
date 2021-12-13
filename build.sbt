@@ -29,7 +29,7 @@ ThisBuild / githubWorkflowBuild := Seq(
   WorkflowStep.Sbt(List("test"), name = Option("Run tests")),
   WorkflowStep.Sbt(`java-time-literals`.componentProjects.map(p => s"${p.id} / mimaReportBinaryIssues").toList, name = Option("Check binary compatibility with MiMa")),
 )
-ThisBuild / githubWorkflowJavaVersions := Seq("adopt@1.8", "adopt@1.11")
+ThisBuild / githubWorkflowJavaVersions := Seq(JavaSpec.temurin("8"), JavaSpec.temurin("11"))
 ThisBuild / githubWorkflowTargetTags ++= Seq("v*")
 ThisBuild / githubWorkflowPublishTargetBranches := Seq(RefPredicate.StartsWith(Ref.Tag("v")))
 ThisBuild / githubWorkflowPublish := Seq(
