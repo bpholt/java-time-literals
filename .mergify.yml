@@ -1,3 +1,13 @@
+queue_rules:
+  - name: default
+    conditions:
+      - status-success=Build and Test (ubuntu-latest, 2.13.7, temurin@8)
+      - status-success=Build and Test (ubuntu-latest, 2.13.7, temurin@11)
+      - status-success=Build and Test (ubuntu-latest, 2.12.15, temurin@8)
+      - status-success=Build and Test (ubuntu-latest, 2.12.15, temurin@11)
+      - status-success=Build and Test (ubuntu-latest, 3.0.2, temurin@8)
+      - status-success=Build and Test (ubuntu-latest, 3.0.2, temurin@11)
+
 pull_request_rules:
   - name: assign and label scala-steward's PRs
     conditions:
@@ -10,13 +20,13 @@ pull_request_rules:
   - name: merge scala-steward's PRs
     conditions:
       - author=scala-steward
-      - status-success=Build and Test (ubuntu-latest, 2.13.6, adopt@1.8)
-      - status-success=Build and Test (ubuntu-latest, 2.13.6, adopt@1.11)
-      - status-success=Build and Test (ubuntu-latest, 2.12.15, adopt@1.8)
-      - status-success=Build and Test (ubuntu-latest, 2.12.15, adopt@1.11)
-      - status-success=Build and Test (ubuntu-latest, 3.0.2, adopt@1.8)
-      - status-success=Build and Test (ubuntu-latest, 3.0.2, adopt@1.11)
+      - status-success=Build and Test (ubuntu-latest, 2.13.7, temurin@8)
+      - status-success=Build and Test (ubuntu-latest, 2.13.7, temurin@11)
+      - status-success=Build and Test (ubuntu-latest, 2.12.15, temurin@8)
+      - status-success=Build and Test (ubuntu-latest, 2.12.15, temurin@11)
+      - status-success=Build and Test (ubuntu-latest, 3.0.2, temurin@8)
+      - status-success=Build and Test (ubuntu-latest, 3.0.2, temurin@11)
     actions:
-      merge:
-        method: squash
-        strict: true
+      queue:
+        method: merge
+        name: default

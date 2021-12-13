@@ -5,7 +5,7 @@ import scala.collection.immutable
 
 lazy val V = new {
   val SCALA_2_12 = "2.12.15"
-  val SCALA_2_13 = "2.13.6"
+  val SCALA_2_13 = "2.13.7"
   val SCALA_3 = "3.0.2"
   val Scalas = Seq(SCALA_2_13, SCALA_2_12, SCALA_3)
   val literally = "1.0.2"
@@ -29,7 +29,7 @@ ThisBuild / githubWorkflowBuild := Seq(
   WorkflowStep.Sbt(List("test"), name = Option("Run tests")),
   WorkflowStep.Sbt(`java-time-literals`.componentProjects.map(p => s"${p.id} / mimaReportBinaryIssues").toList, name = Option("Check binary compatibility with MiMa")),
 )
-ThisBuild / githubWorkflowJavaVersions := Seq("adopt@1.8", "adopt@1.11")
+ThisBuild / githubWorkflowJavaVersions := Seq(JavaSpec.temurin("8"), JavaSpec.temurin("11"))
 ThisBuild / githubWorkflowTargetTags ++= Seq("v*")
 ThisBuild / githubWorkflowPublishTargetBranches := Seq(RefPredicate.StartsWith(Ref.Tag("v")))
 ThisBuild / githubWorkflowPublish := Seq(
