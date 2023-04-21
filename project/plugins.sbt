@@ -1,6 +1,6 @@
 addSbtPlugin("com.github.sbt" % "sbt-ci-release" % "1.5.11")
 addSbtPlugin("io.github.davidgregory084" % "sbt-tpolecat" % "0.4.1")
 addSbtPlugin("com.codecommit" % "sbt-github-actions" % "0.14.2")
-addSbtPlugin("org.scala-js" % "sbt-scalajs" % "1.13.0")
-addSbtPlugin("org.portable-scala" % "sbt-scalajs-crossproject" % "1.2.0")
+addSbtPlugin("org.scala-js" % "sbt-scalajs" % "1.13.1")
+addSbtPlugin("org.portable-scala" % "sbt-scalajs-crossproject" % "1.3.1")
 addSbtPlugin("com.typesafe" % "sbt-mima-plugin" % "1.1.1")
