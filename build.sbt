@@ -40,12 +40,12 @@ ThisBuild / tlSonatypeUseLegacyHost := false
 
 lazy val `java-time-literals` = crossProject(JSPlatform, JVMPlatform)
   .in(file("core"))
-  .settings(Seq(
+  .settings(
     description := "Parse string literals into `java.time` instances at compile time",
     libraryDependencies ++= {
       val scalaReflect: immutable.Seq[ModuleID] =
         if (scalaVersion.value.startsWith("3")) Nil
-        else List("org.scala-lang" % "scala-reflect" % scalaVersion.value % "provided")
+        else List("org.scala-lang" % "scala-reflect" % scalaVersion.value % Provided)
 
       scalaReflect ++
         Seq(
@@ -54,7 +54,7 @@ lazy val `java-time-literals` = crossProject(JSPlatform, JVMPlatform)
           "org.scalameta" %% "munit-scalacheck" % V.munit % Test,
         )
     },
-  ))
+  )
   .jsSettings(
     Test / scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.CommonJSModule) },
   )
@@ -65,6 +65,5 @@ lazy val `java-time-literals-root`: Project = (project in file("."))
     publishArtifact := false,
   )
   .aggregate(
-    `java-time-literals`.jvm,
-    `java-time-literals`.js,
+    `java-time-literals`.componentProjects.map(_.project) *
   )
