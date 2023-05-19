@@ -6,7 +6,8 @@ lazy val V = new {
   val SCALA_3 = "3.2.2"
   val Scalas = Seq(SCALA_2_13, SCALA_2_12, SCALA_3)
   val literally = "1.1.0"
-  val munit = "0.7.29"
+  val scalaJavaTime = "2.5.0"
+  val munit = "1.0.0-M7"
 }
 
 ThisBuild / scalaVersion := V.Scalas.head
@@ -49,9 +50,11 @@ lazy val `java-time-literals` = crossProject(JSPlatform, JVMPlatform, NativePlat
 
       scalaReflect ++
         Seq(
-          "org.typelevel" %% "literally" % V.literally,
-          "org.scalameta" %% "munit" % V.munit % Test,
-          "org.scalameta" %% "munit-scalacheck" % V.munit % Test,
+          "org.typelevel" %%% "literally" % V.literally,
+          "io.github.cquiroz" %%% "scala-java-time" % V.scalaJavaTime,
+          "org.scalameta" %%% "munit" % V.munit % Test,
+          "org.scalameta" %%% "munit-scalacheck" % V.munit % Test,
+          "io.github.cquiroz" %%% "scala-java-time-tzdb" % V.scalaJavaTime % Test,
         )
     },
   )
