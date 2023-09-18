@@ -7,7 +7,7 @@ lazy val V = new {
   val Scalas = Seq(SCALA_2_13, SCALA_2_12, SCALA_3)
   val literally = "1.1.0"
   val scalaJavaTime = "2.5.0"
-  val munit = "1.0.0-M8"
+  val munit = "1.0.0-M10"
 }
 
 ThisBuild / scalaVersion := V.Scalas.head
