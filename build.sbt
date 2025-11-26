@@ -2,7 +2,7 @@ import scala.collection.immutable
 
 lazy val V = new {
   val SCALA_2_12 = "2.12.20"
-  val SCALA_2_13 = "2.13.17"
+  val SCALA_2_13 = "2.13.18"
   val SCALA_3 = "3.3.7"
   val Scalas = Seq(SCALA_2_13, SCALA_2_12, SCALA_3)
   val literally = "1.2.0"
