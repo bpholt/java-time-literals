@@ -6,7 +6,7 @@ lazy val V = new {
   val SCALA_3 = "3.3.7"
   val Scalas = Seq(SCALA_2_13, SCALA_2_12, SCALA_3)
   val literally = "1.2.0"
-  val scalaJavaTime = "2.6.0"
+  val scalaJavaTime = "2.7.0"
   val munit = "1.2.1"
   val munitScalacheck = "1.2.0"
 }
