@@ -8,7 +8,7 @@ lazy val V = new {
   val literally = "1.2.0"
   val scalaJavaTime = "2.6.0"
   val munit = "1.2.1"
-  val munitScalacheck = "1.2.0"
+  val munitScalacheck = "1.3.1"
 }
 
 ThisBuild / scalaVersion := V.Scalas.head
